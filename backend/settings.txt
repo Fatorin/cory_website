@@ -1,6 +1,0 @@
-npx create-next-app@latest --typescript
-cory-backend
-cory-frontend
-
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p

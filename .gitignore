@@ -1,5 +1,6 @@
 *.env
 *.tar
 *.yml
+/backend/
 /nginx/
 /cory-home/.dbdata/
