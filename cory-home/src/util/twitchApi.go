@@ -191,7 +191,7 @@ func getToken() {
 
 func ForceGet() {
 	getToken()
-	getToken()
+	FetchData()
 }
 
 func CheckTokenAndGetData() {
