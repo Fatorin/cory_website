@@ -91,11 +91,11 @@ func DeleteLanguage(c *fiber.Ctx) error {
 	language := models.Language{}
 	language.Id = uint(id)
 
-	result := database.DB.Find(&language)
+	result := database.DB.First(&language)
 	if result.Error != nil {
 		c.Status(fiber.StatusBadRequest)
 		return c.JSON(fiber.Map{
-			"message": "Delete Fail, please check error.",
+			"message": "Not found data.",
 			"error":   result.Error,
 		})
 	}
