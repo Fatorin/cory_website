@@ -20,12 +20,17 @@ func main() {
 	database.Connect(os.Getenv("DB_CONNECT_STRING"))
 	database.AutoMigrate()
 	database.SetupAdmin(os.Getenv("ADMIN_USERNAME"), os.Getenv("ADMIN_PASSWORD"))
-	database.SetupRedis()
+	database.SetupRedis(os.Getenv("REDIS_PASSWORD"))
 	database.SetupCacheChannel()
 	database.SetupHashCacheChannel()
 	database.SetupDefaultLanguage(os.Getenv("DEAFULT_LANGUAGE_REGION"), os.Getenv("DEFAULT_LANGUAGE_NAME"))
 
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		BodyLimit: 10 * 1024 * 1024,
+	})
+
+	app.Static("/", "./images")
+
 	app.Use(cors.New(cors.Config{
 		AllowCredentials: true,
 	}))

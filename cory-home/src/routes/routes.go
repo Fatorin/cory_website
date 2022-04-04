@@ -13,6 +13,7 @@ func Setup(app *fiber.App) {
 
 	api.Get("languages", controllers.Languages)
 	api.Get("appTexts", controllers.AppTexts)
+	api.Get("images", controllers.Images)
 
 	twitchApi := api.Group("twitch")
 	twitchApi.Get("emotes", controllers.TwitchEmotes)
@@ -34,4 +35,7 @@ func Setup(app *fiber.App) {
 	adminAuthenticated.Put("appTexts", controllers.UpdateAppText)
 	adminAuthenticated.Delete("appTexts/:id", controllers.DeleteAppText)
 	adminAuthenticated.Post("twitch/forceupdate", controllers.TwitchForceUpdate)
+	adminAuthenticated.Post("images", controllers.AddImage)
+	adminAuthenticated.Put("images", controllers.UpdateImage)
+	adminAuthenticated.Delete("images/:id", controllers.DeleteImage)
 }

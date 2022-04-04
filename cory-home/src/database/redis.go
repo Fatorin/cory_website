@@ -17,10 +17,11 @@ var Cache *redis.Client
 var CacheChannel chan string
 var HashCacheChannel chan HashCache
 
-func SetupRedis() {
+func SetupRedis(password string) {
 	Cache = redis.NewClient(&redis.Options{
-		Addr: "redis:6379",
-		DB:   0,
+		Addr:     "redis:6379",
+		DB:       0,
+		Password: password,
 	})
 }
 
