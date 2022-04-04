@@ -123,16 +123,16 @@ func DeleteImage(c *fiber.Ctx) error {
 	image := models.Image{}
 	image.Id = uint(id)
 
-	result := database.DB.Find(&image)
+	result := database.DB.First(&image)
 	if result.Error != nil {
 		c.Status(fiber.StatusBadRequest)
 		return c.JSON(fiber.Map{
-			"message": "Delete Fail, please check error.",
+			"message": "Not found data.",
 			"error":   result.Error,
 		})
 	}
 
-	result = database.DB.Model(&image).Delete(image)
+	result = database.DB.Delete(image)
 	if result.Error != nil {
 		c.Status(fiber.StatusBadRequest)
 		return c.JSON(fiber.Map{

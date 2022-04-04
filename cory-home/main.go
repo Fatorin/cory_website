@@ -29,7 +29,7 @@ func main() {
 		BodyLimit: 10 * 1024 * 1024,
 	})
 
-	app.Static("/", util.IMAGE_FOLDER_PATH)
+	app.Static("/api", util.IMAGE_FOLDER_PATH)
 
 	app.Use(cors.New(cors.Config{
 		AllowCredentials: true,

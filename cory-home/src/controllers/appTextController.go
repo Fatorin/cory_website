@@ -115,11 +115,11 @@ func DeleteAppText(c *fiber.Ctx) error {
 	var appText models.AppText
 	appText.Id = uint(id)
 
-	result := database.DB.Find(&appText)
+	result := database.DB.First(&appText)
 	if result.Error != nil {
 		c.Status(fiber.StatusBadRequest)
 		return c.JSON(fiber.Map{
-			"message": "Delete Fail, please check error.",
+			"message": "Not found data.",
 			"error":   result.Error,
 		})
 	}
