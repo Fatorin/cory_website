@@ -4,14 +4,13 @@ import (
 	"context"
 	"cory-home/src/database"
 	"cory-home/src/models"
+	"cory-home/src/util"
 	"encoding/json"
 	"sort"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
-
-const appText_cache string = "app_text_cache"
 
 func AppTexts(c *fiber.Ctx) error {
 	langParam := c.Query("lang")
@@ -116,7 +115,16 @@ func DeleteAppText(c *fiber.Ctx) error {
 	var appText models.AppText
 	appText.Id = uint(id)
 
-	result := database.DB.Delete(&appText)
+	result := database.DB.Find(&appText)
+	if result.Error != nil {
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"message": "Delete Fail, please check error.",
+			"error":   result.Error,
+		})
+	}
+
+	result = database.DB.Delete(&appText)
 
 	if result.Error != nil {
 		c.Status(fiber.StatusBadRequest)
@@ -132,5 +140,5 @@ func DeleteAppText(c *fiber.Ctx) error {
 }
 
 func createAppTextRedisKey(languageId int, typeId int) string {
-	return appText_cache + strconv.Itoa(languageId) + "x" + strconv.Itoa(typeId)
+	return util.APPTEXT_CACHE + strconv.Itoa(languageId) + "x" + strconv.Itoa(typeId)
 }

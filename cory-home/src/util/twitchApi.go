@@ -16,10 +16,6 @@ import (
 	"golang.org/x/oauth2/twitch"
 )
 
-const TWITCH_CACHE_CHEERS string = "TWITCH_CACHE_CHEERS"
-const TWITCH_CACHE_EMOTES string = "TWITCH_CACHE_EMOTES"
-const TWITCH_CACHE_BADGES string = "TWITCH_CACHE_BADGES"
-
 var (
 	oauth2Config *clientcredentials.Config
 	currectToken *oauth2.Token
@@ -48,8 +44,6 @@ func saveToRedis(key string, infoDatas []InfoData) {
 	if err != nil {
 		panic(err)
 	}
-
-	fmt.Println("Cahce updated")
 }
 
 func saveToRedisEmotes(key string, emoteDatas []EmoteData) {
@@ -65,8 +59,6 @@ func saveToRedisEmotes(key string, emoteDatas []EmoteData) {
 	if err != nil {
 		panic(err)
 	}
-
-	fmt.Println("Cahce updated")
 }
 
 func analyzeStamp(text []byte) {

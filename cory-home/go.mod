@@ -10,7 +10,10 @@ require (
 	gorm.io/gorm v1.22.5
 )
 
-require github.com/joho/godotenv v1.4.0
+require (
+	github.com/google/uuid v1.3.0
+	github.com/joho/godotenv v1.4.0
+)
 
 require (
 	github.com/golang/protobuf v1.5.2 // indirect

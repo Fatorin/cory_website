@@ -76,5 +76,5 @@ func SetupDefaultLanguage(region string, name string) {
 }
 
 func AutoMigrate() {
-	DB.AutoMigrate(models.User{}, models.Language{}, models.AppText{})
+	DB.AutoMigrate(models.User{}, models.Language{}, models.AppText{}, models.Image{}, models.Component{})
 }
