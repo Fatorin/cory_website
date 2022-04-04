@@ -72,9 +72,8 @@ func AddImage(c *fiber.Ctx) error {
 		})
 	}
 
-	err = c.SaveFile(file, "./images/"+image.Image)
+	err = c.SaveFile(file, util.IMAGE_FOLDER_PATH+image.Image)
 	if err != nil {
-		fmt.Println("err=", err)
 		c.Status(fiber.StatusInternalServerError)
 		return c.JSON(fiber.Map{
 			"message": "system has problem.",
@@ -142,7 +141,7 @@ func DeleteImage(c *fiber.Ctx) error {
 		})
 	}
 
-	path := "./images/" + image.Image
+	path := util.IMAGE_FOLDER_PATH + image.Image
 	if _, err := os.Stat(path); err == nil {
 		err = os.Remove(path)
 		if err != nil {
