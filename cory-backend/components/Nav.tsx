@@ -1,18 +1,17 @@
 import Link from "next/link";
 import router from "next/router";
 import { useState } from "react";
-import { connect } from "react-redux";
-import { User } from "../models/user";
 import { useAppDispatch } from "../redux/hooks";
 import { setUserEmail, setUserId, setUserName } from "../redux/user/actions";
 import { axiosInstance } from "../utils/api";
 import Image from 'next/image';
 
 const links = [
-    { key: 0, href: "/", label: "ホーム" },
-    { key: 1, href: "/profile", label: "プローフィール" },
-    { key: 2, href: "/rule", label: "ルール" },
-    { key: 3, href: "/joinway", label: "参加方法" },
+    { key: 0, href: "/", label: "グローバル設定" },
+    { key: 1, href: "/home", label: "ホーム" },
+    { key: 2, href: "/profile", label: "プローフィール" },
+    { key: 3, href: "/rule", label: "ルール" },
+    { key: 4, href: "/joinway", label: "参加方法" },
 ]
 
 const Nav = (props: any) => {

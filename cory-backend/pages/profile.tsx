@@ -54,30 +54,6 @@ const Profile: NextPage = () => {
         });
     }
 
-    const getLanguages = async () => {
-        await axiosInstance.get('languages')
-            .then(({ data }) => {
-                setLanguageList(data);
-            })
-            .catch((e) => {
-                console.log(e);
-                console.log("Error");
-            })
-    }
-
-    const fetchData = async () => {
-        setBtnControl(false);
-        await axiosInstance.get("appTexts", { params: { lang: currentLangId, type: AppTextSetting[APP_TEXT_PROFILE] } })
-            .then(({ data }) => {
-                setBtnControl(true);
-                setForm(data);
-            })
-            .catch((e) => {
-                console.log(e);
-                console.log("Error");
-            })
-    }
-
     const setLanguageList = (langs: Language[]) => {
         setLanguages(langs);
         setCurrentLangId((langs[0]?.id).toString());
@@ -93,10 +69,32 @@ const Profile: NextPage = () => {
     }
 
     useEffect(() => {
+        const getLanguages = async () => {
+            await axiosInstance.get('languages')
+                .then(({ data }) => {
+                    setLanguageList(data);
+                })
+                .catch((e) => {
+                    console.log(e);
+                    console.log("Error");
+                })
+        }
         getLanguages();
     }, [])
 
     useEffect(() => {
+        const fetchData = async () => {
+            setBtnControl(false);
+            await axiosInstance.get("appTexts", { params: { lang: currentLangId, type: AppTextSetting[APP_TEXT_PROFILE] } })
+                .then(({ data }) => {
+                    setBtnControl(true);
+                    setForm(data);
+                })
+                .catch((e) => {
+                    console.log(e);
+                })
+        }
+
         if (currentLangId !== "") {
             fetchData();
         }

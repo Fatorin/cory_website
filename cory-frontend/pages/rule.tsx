@@ -17,7 +17,6 @@ const Rule: NextPage = () => {
             })
             .catch((e) => {
                 console.log(e);
-                console.log("Error");
             })
     }
 
@@ -26,10 +25,9 @@ const Rule: NextPage = () => {
             await axiosInstance.get('languages')
                 .then(({ data }) => {
                     setLanguageList(data);
-                    console.log(data);
                 })
                 .catch((e) => {
-                    console.log("Error");
+                    console.log(e);
                 })
         }
 
