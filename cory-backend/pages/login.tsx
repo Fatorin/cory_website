@@ -7,6 +7,7 @@ import { setUserEmail, setUserId, setUserName } from '../redux/user/actions';
 import { useAppDispatch } from '../redux/hooks';
 import { NotificationContext } from '../components/Notification/Notification';
 import { Loading } from '../components/Loading';
+import { ERROR_MSG_SERVER_CONNECT_FAIL } from '../utils/commonErrorMessage';
 
 const Login: NextPage = () => {
     const router = useRouter();
@@ -24,7 +25,7 @@ const Login: NextPage = () => {
             username,
             password
         }).catch((e) => {
-            addError("サーバとの間に通信エラーが発生しています。", false);
+            addError(ERROR_MSG_SERVER_CONNECT_FAIL, false);
             setIsLoading(false);
             return;
         });
@@ -37,7 +38,7 @@ const Login: NextPage = () => {
                 router.push("/");
             })
             .catch(() => {
-                addError("サーバとの間に通信エラーが発生しています。", false);
+                addError(ERROR_MSG_SERVER_CONNECT_FAIL, false);
             })
 
         setIsLoading(false);
@@ -75,7 +76,7 @@ const Login: NextPage = () => {
                         </div>
                     </div>
                     <div className="h-6">
-                        {isLoading ? <Loading text={"Loading..."} /> : <LoginBtn />}
+                        {isLoading ? <Loading text="Loading..." /> : <LoginBtn />}
                     </div>
                 </form>
             </div>

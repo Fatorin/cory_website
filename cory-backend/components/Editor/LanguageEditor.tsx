@@ -1,6 +1,8 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 import { Language } from "../../models/language";
 import { axiosInstance } from "../../utils/api";
+import { ERROR_MSG_SERVER_CONNECT_FAIL, ERROR_MSG_UPDATE_FAIL } from "../../utils/commonErrorMessage";
+import { NotificationContext } from "../Notification/Notification";
 
 const defaultThead = [
     { key: 0, name: "言語名" },
@@ -22,6 +24,7 @@ const initLangs = [
 
 export const LanguageEditor = () => {
     const [languages, setLanguages] = useState<Language[]>([]);
+    const { addError } = useContext(NotificationContext);
     const [defaultLangs, setDefaultLangs] = useState(initLangs);
     const [currentLang, setCurrentLang] = useState("none");
     const [addBtn, setAddBtn] = useState(false);
@@ -42,15 +45,15 @@ export const LanguageEditor = () => {
     const addLanguage = async () => {
         setAddBtn(true);
         if (currentLang == "none") {
-            console.log("正しい言語を選択してください");
+            addError("正しい言語を選択してください", false);
             setAddBtn(false);
             return;
         }
 
-        const langData = initLangs.find((value) => value.region == currentLang);
+        var langData = initLangs.find((value) => value.region == currentLang);
 
         if (langData == undefined || langData == null) {
-            console.log("も一度を選択してください");
+            addError("も一度を選択してください", false);
             return;
         }
 
@@ -60,10 +63,12 @@ export const LanguageEditor = () => {
             nick_name: langData?.nickname,
             available: false,
         })
-            .then(() => {
-                fetchData();
+            .then(({ data }) => {
+                setLanguages(languages.concat(data));
+                setDefaultLangs(defaultLangs.filter(v => v.region != langData?.region))
+                setCurrentLang("none");
             }).catch((error) => {
-                console.log(error);
+                addError(ERROR_MSG_SERVER_CONNECT_FAIL, false);
             });
 
         setAddBtn(false);
@@ -78,8 +83,6 @@ export const LanguageEditor = () => {
             available: !lang.available,
         })
             .then(({ data }) => {
-                console.log("toggle success.");
-                console.log(data);
                 let list = [...languages];
                 list.forEach(element => {
                     if (element.id == lang.id) {
@@ -89,7 +92,7 @@ export const LanguageEditor = () => {
                 setLanguages(list);
             })
             .catch(() => {
-                console.log("update fail");
+                addError(ERROR_MSG_UPDATE_FAIL, false);
             })
     }
 
@@ -101,7 +104,7 @@ export const LanguageEditor = () => {
                     filterLang(data);
                 })
                 .catch((e) => {
-                    console.log("Error");
+                    addError(ERROR_MSG_SERVER_CONNECT_FAIL, false);
                 })
         }
 
@@ -114,7 +117,7 @@ export const LanguageEditor = () => {
         }
 
         getLanguages();
-    }, [])
+    }, [addError])
 
     useEffect(() => {
         fetchData();
@@ -143,14 +146,14 @@ export const LanguageEditor = () => {
                         })}
                     </tbody>
                 </table>
-                <div className="py-2 pr-2 float-right">
+                {defaultLangs.length == 1 ? null : <div className="py-2 pr-2 float-right">
                     <select className="border-slate-500 rounded-xl border-2" onChange={(e) => setCurrentLang(e.target.value)}>
                         {defaultLangs.map((lang) => {
                             return <option key={lang.region} value={lang.region}>{lang.nickname}</option>
                         })}
                     </select>
                     <button className="border-slate-500 rounded-xl border-2 bg-yellow-400 px-2 ml-4 hover:bg-yellow-200 active:bg-yellow-100" disabled={addBtn} onClick={() => addLanguage()}>追加する</button>
-                </div>
+                </div>}
             </div>
         </>
     )

@@ -1,18 +1,16 @@
 import type { NextPage } from 'next';
-import { LanguageEditor } from '../components/Editor/LanguageEditor';
-import { UserInfoEditor } from '../components/Editor/UserInfoEditor';
 import Layout from '../components/Layout';
+import { LanguageEditor } from "../components/Editor/LanguageEditor";
+import { UserInfoEditor } from "../components/Editor/UserInfoEditor";
 
-const Home: NextPage = () => {
+const Index: NextPage = () => {
   return (
-    <>
       <Layout>
-        <LanguageEditor />
-        <div className="p-2"></div>
-        <UserInfoEditor />
+          <LanguageEditor />
+          <div className="p-2"></div>
+          <UserInfoEditor />
       </Layout>
-    </>
   )
 }
 
-export default Home;
+export default Index;
