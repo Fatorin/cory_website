@@ -2,7 +2,7 @@ import Link from "next/link";
 import router from "next/router";
 import { useState } from "react";
 import { useAppDispatch } from "../redux/hooks";
-import { setUserEmail, setUserId, setUserName } from "../redux/user/actions";
+import { setUserId } from "../redux/user/actions";
 import { axiosInstance } from "../utils/api";
 import Image from 'next/image';
 
@@ -17,6 +17,7 @@ const links = [
 const Nav = (props: any) => {
     const dispatch = useAppDispatch();
     const [style, SetStyle] = useState("-translate-x-full");
+
     const toggle = () => {
         if (style !== "") {
             SetStyle("");
@@ -25,28 +26,26 @@ const Nav = (props: any) => {
         }
     }
 
+    const toggleForDiv = () => {
+        if (style == "") {
+            SetStyle("-translate-x-full");
+        }
+    }
+
     const clearUser = () => {
         dispatch(setUserId(0));
-        dispatch(setUserName(""));
-        dispatch(setUserEmail(""));
     }
 
     const logout = async () => {
-        await axiosInstance.get("admin/logout")
-            .then(() => {
-                clearUser();
-                router.push("/login");
-
-            }).catch(() => {
-                clearUser();
-                router.push("/login");
-            });
+        await axiosInstance.get("admin/logout");
+        clearUser();
+        router.push("/login");
     }
 
     return (
         <div className="relative min-h-screen md:flex">
             {/*mobile-sidebar*/}
-            <div className={"bg-cyan-100 text-blue-500 flex justify-between md:hidden"}>
+            <div className={"bg-cyan-200 text-blue-500 flex justify-between md:hidden"}>
                 <Link href="#" passHref>
                     <span className="block p-4 font-bold">こりーのホームページ</span>
                 </Link>
@@ -58,11 +57,11 @@ const Nav = (props: any) => {
             </div>
 
             {/*sidebar*/}
-            <div className={"divide-gray-400 bg-cyan-100 text-blue-500 w-64 space-y-6 px-2 py-4 absolute inset-y-0 left-0 transform md:relative md:translate-x-0 transition duration-200 ease-in-out " + style}>
+            <div className={"divide-gray-400 bg-cyan-100 border-r border-cyan-400 text-blue-500 w-64 space-y-6 px-2 py-4 absolute inset-y-0 left-0 transform md:relative md:translate-x-0 transition duration-200 ease-in-out " + style}>
                 {/*logo*/}
                 <Link href="/" passHref>
                     <div className="flex space-x-2 justify-center">
-                        <Image className="flex" src="/himitukichi/images/favicon.ico" alt="Workflow" height={24} width={24} />
+                        <Image className="flex" src="/himitukichi/images/favicon.ico" alt="Workflow" height={24} width={24} layout="fixed" />
                         <span className="text-2x1 font-extrabold">こりーのホームページ</span>
                     </div>
                 </Link>
@@ -83,7 +82,7 @@ const Nav = (props: any) => {
                 </button>
             </div>
             {/*content*/}
-            <div className="p-4 w-screen">
+            <div className="p-2 w-full min-h-screen bg-cyan-100" onClick={toggleForDiv}>
                 {props.children}
             </div>
         </div>

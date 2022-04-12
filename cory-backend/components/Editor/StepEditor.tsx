@@ -1,6 +1,4 @@
-import { NextPage } from "next";
 import { useContext, useEffect, useState } from "react";
-import Layout from "../../components/Layout";
 import { NotificationContext } from "../../components/Notification/Notification";
 import { AppText } from "../../models/apptext";
 import { Language } from "../../models/language";
@@ -18,7 +16,7 @@ const StepEditor = ({ title, editorType }: EditorType) => {
     const [currentLangId, setCurrentLangId] = useState("");
     const [sourceAppTexts, setSourceAppTexts] = useState<AppText[]>([]);
     const [hasError, setHasError] = useState(false);
-    const { addError } = useContext(NotificationContext);
+    const { addMessage } = useContext(NotificationContext);
 
     const setAppTextsList = (appTexts: AppText[]) => {
         setAppTexts(appTexts);
@@ -42,7 +40,7 @@ const StepEditor = ({ title, editorType }: EditorType) => {
             temp.text = "";
         } else {
             temp = new AppText();
-            temp.language_id = parseInt(currentLangId);
+            temp.language_id = parseInt(currentLangId, 10);
             temp.type = editorType;
             temp.order = appTexts.length + 1;
             temp.text = "";
@@ -63,6 +61,12 @@ const StepEditor = ({ title, editorType }: EditorType) => {
 
     const updateAppText = async () => {
         setHasError(false);
+        if (appTexts.length == 0 && sourceAppTexts.length == 0) {
+            addMessage("ステップを追加してください", false);
+            setHasError(true);
+            return;
+        }
+
         if (appTexts.length < sourceAppTexts.length) {
             for (let index = 0; index < sourceAppTexts.length - appTexts.length; index++) {
                 let temp = [...sourceAppTexts];
@@ -80,9 +84,9 @@ const StepEditor = ({ title, editorType }: EditorType) => {
         })
 
         if (hasError) {
-            addError(ERROR_MSG_UPDATE_SUCCESS, true);
+            addMessage(ERROR_MSG_UPDATE_SUCCESS, true);
         } else {
-            addError(ERROR_MSG_UPDATE_FAIL, false);
+            addMessage(ERROR_MSG_UPDATE_FAIL, false);
         }
 
     }
@@ -151,7 +155,6 @@ const StepEditor = ({ title, editorType }: EditorType) => {
                 })
                 .catch((e) => {
                     console.log(e);
-                    console.log("Error");
                 })
         }
 
@@ -183,31 +186,31 @@ const StepEditor = ({ title, editorType }: EditorType) => {
 
     return (
         <>
-            <div className="p-4 w-full rounded-xl overflow-hidden bg-gradient-to-r from-emerald-50 to-teal-100 border border-emerald-500 text-center">
-                <h1 className="text-4xl pb-4">{title}</h1>
-                <select className="border-slate-500 rounded-xl border-2" onChange={(e) => setCurrentLangId(e.target.value)}>
+            <h1 className="text-6xl py-8 text-center">{title}</h1>
+            <div className="flex flex-wrap text-center gap-2 justify-center">
+                <select className="border-slate-500 rounded-xl border shadow" onChange={(e) => setCurrentLangId(e.target.value)}>
                     {languages.map((lang) => {
                         return <option key={lang.id} value={lang.id}>{lang.nick_name}</option>
                     })}
                 </select>
-                <button className="ml-2 shadow bg-gray-500 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white py-1 px-4 rounded" type="button" onClick={() => addStep()}>
+                <button className="shadow bg-gray-500 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white px-4 py-2 rounded" type="button" onClick={() => addStep()}>
                     ステップを追加
                 </button>
-                <button className="ml-2 shadow bg-gray-500 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white py-1 px-4 rounded" type="button" onClick={() => removeStep()}>
+                <button className="shadow bg-gray-500 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white px-4 py-2 rounded" type="button" onClick={() => removeStep()}>
                     最後のステップを削除します
                 </button>
-                <button className="ml-2 shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white py-1 px-4 rounded" type="button" onClick={() => updateAppText()}>
+                <button className="shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white px-4 py-2 rounded" type="button" onClick={() => updateAppText()}>
                     アップデート
                 </button>
             </div>
-            {appTexts.length == 0 ? null : <form className="w-full">
+            {appTexts.length == 0 ? <div className="text-center my-8 text-4xl italic">この言語のステップはまだ作りません</div> : <div>
                 {appTexts.map((appText) => {
-                    return <div key={appText.order} className="w-full align-middle my-2 p-4 rounded-xl overflow-hidden bg-gradient-to-r from-emerald-50 to-teal-100 border border-emerald-500">
+                    return <div key={appText.order} className="mx-auto md:w-2/3 w-full align-middle my-2 p-4 rounded-xl bg-gradient-to-tr from-sky-100 to-teal-200 border border-emerald-500 animate-fadeIn">
                         <h2 className="block text-center text-xl font-bold pb-3">ステップ {appText.order}</h2>
-                        <textarea className="h-16 appearance-none border-2 border-gray-200 rounded w-full leading-tight focus:outline-none focus:bg-white focus:border-gray-500 resize-none" value={appText.text} onChange={(e) => setAppTextsByOrder(appText.order, e.target.value)} />
+                        <textarea className="h-16 appearance-none border border-gray-200 rounded w-full leading-tight focus:outline-none focus:bg-white focus:border-gray-500 resize-none" value={appText.text} onChange={(e) => setAppTextsByOrder(appText.order, e.target.value)} />
                     </div>
                 })}
-            </form>}
+            </div>}
         </>
     )
 }

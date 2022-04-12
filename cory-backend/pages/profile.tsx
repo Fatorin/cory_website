@@ -4,7 +4,7 @@ import Layout from "../components/Layout";
 import { AppText } from "../models/apptext";
 import { Language } from "../models/language";
 import { axiosInstance } from "../utils/api";
-import { AppTextSetting, APP_TEXT_PROFILE } from "../utils/appTextSetting";
+import { AppTextSetting, APP_TEXT_PROFILE } from "../utils/commonSetting";
 
 const Profile: NextPage = () => {
     const [textArea, setTextArea] = useState("");
@@ -76,7 +76,6 @@ const Profile: NextPage = () => {
                 })
                 .catch((e) => {
                     console.log(e);
-                    console.log("Error");
                 })
         }
         getLanguages();
@@ -102,27 +101,26 @@ const Profile: NextPage = () => {
 
     return (
         <Layout>
-            <div className="p-4 w-full rounded-xl overflow-hidden bg-gradient-to-r from-emerald-50 to-teal-100 border border-emerald-500">
-                <select className="border-slate-500 rounded-xl border-2" onChange={(e) => setCurrentLangId(e.target.value)}>
+            <h1 className="text-6xl py-4 text-center">プロフィール</h1>
+            <div className="flex flex-wrap text-center gap-2 justify-center">
+                <select className="border-slate-500 rounded-xl border" onChange={(e) => setCurrentLangId(e.target.value)}>
                     {languages.map((lang) => {
                         return <option key={lang.id} value={lang.id}>{lang.nick_name}</option>
                     })}
                 </select>
             </div>
-            <div className="my-1 p-4 w-full rounded-xl overflow-hidden bg-gradient-to-r from-emerald-50 to-teal-100 border border-emerald-500">
-                <form className="w-full">
-                    <div className="md:items-center mb-6">
-                        <h2 className="block text-center mb-1 md:mb-0 text-xl font-bold">自己紹介</h2>
-                    </div>
-                    <div className="md:flex md:items-center mb-6 w-full">
-                        <textarea className="h-64 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 resize-none" placeholder={!btnControl ? "言語を選択してください" : "自己紹介を書いてください"} disabled={!btnControl} value={textArea} onChange={(e) => setTextArea(e.target.value)} />
-                    </div>
-                    <div className="md:flex md:items-center justify-center">
-                        <button className="shadow bg-gray-500 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button" onClick={upsertSubmit} disabled={!btnControl}>
-                            {appTexts.length == 0 ? "新着" : "アップデート"}
-                        </button>
-                    </div>
-                </form>
+            <div className="my-4 p-4 md:w-2/3 w-full mx-auto rounded-xl bg-gradient-to-tr from-sky-100 to-teal-200 border border-emerald-500">
+                <div className="mb-6">
+                    <h2 className="block text-center mb-1 md:mb-0 text-xl font-bold">自己紹介</h2>
+                </div>
+                <div className="mb-6">
+                    <textarea className="h-64 appearance-none border border-gray-200 rounded w-full py-2 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 resize-none" placeholder="自己紹介を書いてください" disabled={!btnControl} value={textArea} onChange={(e) => setTextArea(e.target.value)} />
+                </div>
+                <div className="text-center">
+                    <button className="shadow bg-gray-500 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button" onClick={upsertSubmit} disabled={!btnControl}>
+                        {appTexts.length == 0 ? "新着" : "アップデート"}
+                    </button>
+                </div>
             </div>
         </Layout>
     )

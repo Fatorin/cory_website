@@ -24,7 +24,7 @@ const initLangs = [
 
 export const LanguageEditor = () => {
     const [languages, setLanguages] = useState<Language[]>([]);
-    const { addError } = useContext(NotificationContext);
+    const { addMessage: addError } = useContext(NotificationContext);
     const [defaultLangs, setDefaultLangs] = useState(initLangs);
     const [currentLang, setCurrentLang] = useState("none");
     const [addBtn, setAddBtn] = useState(false);
@@ -125,8 +125,8 @@ export const LanguageEditor = () => {
 
     return (
         <>
-            <div className="w-fit rounded-xl overflow-hidden bg-gradient-to-r from-emerald-50 to-teal-100 border border-emerald-500">
-                <table className="table-auto text-center align-middle">
+            <div className="w-full md:w-fit rounded-xl overflow-hidden bg-gradient-to-r from-emerald-50 to-teal-100 border border-emerald-500">
+                <table className="table-auto text-center align-middle text-xs md:text-base w-full md:w-fit">
                     <caption className="py-2 text-xl font-bold">言語設定</caption>
                     <thead>
                         <tr>
@@ -147,12 +147,12 @@ export const LanguageEditor = () => {
                     </tbody>
                 </table>
                 {defaultLangs.length == 1 ? null : <div className="py-2 pr-2 float-right">
-                    <select className="border-slate-500 rounded-xl border-2" onChange={(e) => setCurrentLang(e.target.value)}>
+                    <select className="border-slate-500 rounded-xl border" onChange={(e) => setCurrentLang(e.target.value)}>
                         {defaultLangs.map((lang) => {
                             return <option key={lang.region} value={lang.region}>{lang.nickname}</option>
                         })}
                     </select>
-                    <button className="border-slate-500 rounded-xl border-2 bg-yellow-400 px-2 ml-4 hover:bg-yellow-200 active:bg-yellow-100" disabled={addBtn} onClick={() => addLanguage()}>追加する</button>
+                    <button className="border-slate-500 rounded-xl border bg-yellow-400 px-2 ml-4 hover:bg-yellow-200 active:bg-yellow-100" disabled={addBtn} onClick={() => addLanguage()}>追加する</button>
                 </div>}
             </div>
         </>
