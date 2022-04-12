@@ -3,7 +3,7 @@ import React, { SyntheticEvent, useContext, useState } from "react";
 import Image from 'next/image';
 import { useRouter } from "next/router";
 import { axiosInstance } from '../utils/api';
-import { setUserEmail, setUserId, setUserName } from '../redux/user/actions';
+import { setUserId } from '../redux/user/actions';
 import { useAppDispatch } from '../redux/hooks';
 import { NotificationContext } from '../components/Notification/Notification';
 import { Loading } from '../components/Loading';
@@ -13,19 +13,19 @@ const Login: NextPage = () => {
     const router = useRouter();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const { addError, removeError } = useContext(NotificationContext);
+    const { addMessage, removeMessage } = useContext(NotificationContext);
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useAppDispatch();
 
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
         setIsLoading(true);
-        removeError();
+        removeMessage();
         await axiosInstance.post('/admin/login', {
             username,
             password
         }).catch((e) => {
-            addError(ERROR_MSG_SERVER_CONNECT_FAIL, false);
+            addMessage(ERROR_MSG_SERVER_CONNECT_FAIL, false);
             setIsLoading(false);
             return;
         });
@@ -33,12 +33,10 @@ const Login: NextPage = () => {
         await axiosInstance.get('/admin/user')
             .then(({ data }) => {
                 dispatch(setUserId(data.id));
-                dispatch(setUserName(data.username));
-                dispatch(setUserEmail(data.email));
                 router.push("/");
             })
             .catch(() => {
-                addError(ERROR_MSG_SERVER_CONNECT_FAIL, false);
+                addMessage(ERROR_MSG_SERVER_CONNECT_FAIL, false);
             })
 
         setIsLoading(false);

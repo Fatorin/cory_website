@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import StepEditor from "../components/Editor/StepEditor";
 import Layout from "../components/Layout";
-import { AppTextSetting, APP_TEXT_RULE } from "../utils/appTextSetting";
+import { AppTextSetting, APP_TEXT_RULE } from "../utils/commonSetting";
 
 const Rule: NextPage = () => {
     return (
