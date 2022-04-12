@@ -30,7 +30,7 @@ func SetupCacheChannel() {
 
 	go func(ch chan string) {
 		for {
-			time.Sleep(5 * time.Second)
+			time.Sleep(2 * time.Second)
 
 			key := <-ch
 
@@ -52,7 +52,7 @@ func SetupHashCacheChannel() {
 
 	go func(ch chan HashCache) {
 		for {
-			time.Sleep(5 * time.Second)
+			time.Sleep(2 * time.Second)
 
 			hashCache := <-ch
 

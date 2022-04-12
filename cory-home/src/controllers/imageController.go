@@ -25,12 +25,14 @@ func Images(c *fiber.Ctx) error {
 		})
 	}
 
+	tagId, _ := strconv.Atoi(tagParam)
+
 	var images []models.Image
 	var ctx = context.Background()
 
 	database.DB.Where("`tag` = ?", tagParam).Find(&images)
 
-	result, err := database.Cache.Get(ctx, createImageRedisKey(tagParam)).Result()
+	result, err := database.Cache.Get(ctx, createImageRedisKey(uint(tagId))).Result()
 	if err != nil {
 		bytes, err := json.Marshal(images)
 
@@ -38,7 +40,7 @@ func Images(c *fiber.Ctx) error {
 			panic(err)
 		}
 
-		err = database.Cache.Set(ctx, createImageRedisKey(tagParam), bytes, 0).Err()
+		err = database.Cache.Set(ctx, createImageRedisKey(uint(tagId)), bytes, 0).Err()
 		if err != nil {
 			panic(err)
 		}
@@ -68,7 +70,7 @@ func AddImage(c *fiber.Ctx) error {
 	if err != nil {
 		c.Status(fiber.StatusUnsupportedMediaType)
 		return c.JSON(fiber.Map{
-			"message": "not support type.",
+			"message": err.Error(),
 		})
 	}
 
@@ -76,7 +78,7 @@ func AddImage(c *fiber.Ctx) error {
 	if err != nil {
 		c.Status(fiber.StatusInternalServerError)
 		return c.JSON(fiber.Map{
-			"message": "system has problem.",
+			"message": "System has problem.",
 		})
 	}
 
@@ -97,9 +99,24 @@ func AddImage(c *fiber.Ctx) error {
 
 func UpdateImage(c *fiber.Ctx) error {
 	image := models.Image{}
+	oldImage := models.Image{}
 
 	if err := c.BodyParser(&image); err != nil {
 		return err
+	}
+
+	oldImage.Id = image.Id
+	oldResult := database.DB.First(&oldImage)
+	if oldResult.Error != nil {
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"message": "Find old has error.",
+			"error":   oldResult.Error,
+		})
+	}
+
+	if oldImage.Tag != image.Tag {
+		go database.ClearCache(createImageRedisKey(oldImage.Tag))
 	}
 
 	result := database.DB.Model(&image).Updates(&image)
@@ -157,18 +174,15 @@ func DeleteImage(c *fiber.Ctx) error {
 	})
 }
 
-func createImageRedisKey(tag string) string {
-	return util.IMAGE_CACHE + "_" + tag
+func createImageRedisKey(tag uint) string {
+	return util.IMAGE_CACHE + "_" + strconv.Itoa(int(tag))
 }
 
 func createFilePath(fileType string) (string, error) {
-	image := models.Image{}
 	path := ""
 	for {
 		path = strings.Replace(uuid.New().String(), "-", "", -1)
-		result := database.DB.Where("`image` = ?", path).First(&image)
-		if result.Error != nil {
-			fmt.Println(result.Error)
+		if _, err := os.Stat(util.IMAGE_FOLDER_PATH + path); err != nil {
 			break
 		}
 	}
