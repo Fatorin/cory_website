@@ -128,7 +128,7 @@ const ImageAdd = ({ callback }: ImageCallBackType) => {
             <div className={`z-40 bg-gray-600 bg-opacity-50 inset-0 px-4 absolute w-full h-full ${show ? "" : "hidden"}`}>
                 <div className="absolute h-full w-full left-0 top-0" onClick={closeModal}></div>
                 <div className="relative top-20 mx-auto shadow-lg rounded-md bg-white max-w-md">
-                    <div className="flex justify-between items-center shadow bg-red-500 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white px-4 py-2 rounded transition">
+                    <div className="flex justify-between items-center shadow bg-green-500 focus:shadow-outline focus:outline-none text-white px-4 py-2 rounded transition">
                         <h3>イメージを追加する</h3>
                         <button onClick={closeModal}>X</button>
                     </div>

@@ -28,6 +28,7 @@ export const NotificationProvider: React.FC = (props => {
         setMessage(message);
         setStatus(status);
         setShow(true);
+        setTimeout(onRemoveMessage, 5000);
     }
 
     const onRemoveMessage = () => {
