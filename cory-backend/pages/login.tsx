@@ -57,11 +57,9 @@ const Login: NextPage = () => {
 
     return (
         <div className="bg-gray-500 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8">
-                <div>
-                    <Image className="mx-auto h-12 w-auto" src="/himitukichi/images/logo.png" alt="Workflow" height={674} width={1920} layout='responsive' priority />
-                    <h2 className="mt-6 text-center text-3xl font-extrabold text-white">こりーのホームページ</h2>
-                </div>
+            <div className="space-y-8 w-full max-w-lg">
+                <Image src="/himitukichi/images/logo.png" alt="Workflow" height={350} width={1000} layout='responsive' priority />
+                <h2 className="mt-6 text-center text-3xl font-extrabold text-white">こりーのホームページ</h2>
                 <form className="mt-8 space-y-6" onSubmit={submit}>
                     <div className="rounded-md shadow-sm -space-y-px">
                         <div>

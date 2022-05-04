@@ -43,7 +43,7 @@ const Nav = (props: any) => {
     }
 
     return (
-        <div className="relative min-h-screen md:flex">
+        <div className="relative h-full md:flex">
             {/*mobile-sidebar*/}
             <div className={"bg-cyan-200 text-blue-500 flex justify-between md:hidden"}>
                 <Link href="#" passHref>
@@ -57,7 +57,7 @@ const Nav = (props: any) => {
             </div>
 
             {/*sidebar*/}
-            <div className={"divide-gray-400 bg-cyan-100 border-r border-cyan-400 text-blue-500 w-64 space-y-6 px-2 py-4 absolute inset-y-0 left-0 transform md:relative md:translate-x-0 transition duration-200 ease-in-out " + style}>
+            <div className={"z-40 divide-gray-400 bg-cyan-100 border-r border-cyan-400 text-blue-500 w-64 space-y-6 px-2 py-4 absolute inset-y-0 left-0 transform md:relative md:translate-x-0 transition duration-200 ease-in-out " + style}>
                 {/*logo*/}
                 <Link href="/" passHref>
                     <div className="flex space-x-2 justify-center">

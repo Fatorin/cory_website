@@ -12,7 +12,7 @@ type ImageCallBackType = {
 const ImageAdd = ({ callback }: ImageCallBackType) => {
     const { addMessage } = useContext(NotificationContext);
     const [show, setShow] = useState(false);
-    const [url, setURL] = useState("/himitukichi/images/placeholder.png");
+    const [url, setURL] = useState("himitukichi/images/placeholder.png");
     const inputName = useRef<HTMLInputElement>(null);
     const [tag, setTag] = useState(ImageTag[IMAGE_TAG_HOME]);
     const [file, setFile] = useState<File>();
@@ -65,7 +65,7 @@ const ImageAdd = ({ callback }: ImageCallBackType) => {
         if (inputName.current) {
             inputName.current.value = "";
         }
-        setURL("/himitukichi/images/placeholder.png");
+        setURL("himitukichi/images/placeholder.png");
         setFile(undefined);
         setShow(false);
         setUploadDone(false);
@@ -124,7 +124,7 @@ const ImageAdd = ({ callback }: ImageCallBackType) => {
 
     return (
         <>
-            <button className="w-fit bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-700 transition" onClick={openModal}>イメージを追加する</button>
+            <button className="w-fit bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-400 transition" onClick={openModal}>イメージを追加する</button>
             <div className={`z-40 bg-gray-600 bg-opacity-50 inset-0 px-4 absolute w-full h-full ${show ? "" : "hidden"}`}>
                 <div className="absolute h-full w-full left-0 top-0" onClick={closeModal}></div>
                 <div className="relative top-20 mx-auto shadow-lg rounded-md bg-white max-w-md">
