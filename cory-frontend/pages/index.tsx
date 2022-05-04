@@ -1,54 +1,16 @@
-import type { NextPage } from 'next'
-import Image from 'next/image'
+import type { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next'
 import { useEffect, useState } from 'react'
+import { Avatar } from '../components/Index/Avatar'
+import { LinkBar } from '../components/Index/LinkBar'
 import { Layout } from '../components/Layout'
-import SubscriptionStampViewer from '../components/SubscriptionStampViewer'
+import { axiosInstance } from '../utils/api'
+import { HOME_COMPONENT_AD, HOME_COMPONENT_AVATAR, HOME_COMPONENT_LOGO } from '../utils/commonTextSetting'
+import { ComponentModel } from '../models/component'
+import { Logo } from '../components/Index/Logo'
+import { EmoteDatas, InfoData } from '../models/infoData'
+import { Ad } from '../components/Index/Ad'
 
-const LinkBar = () => {
-  return (
-    <>
-      <div className="justify-center items-center flex flex-wrap gap-4">
-        <a target="_blank" href="https://www.twitch.tv/kuriyamacory" rel="noopener noreferrer">
-          <div className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-500 px-4 rounded-lg border-2 border-blue-200 bg-purple-400 ring-2 ring-purple-900 font-bold hover:text-white">
-            Twitch
-          </div>
-        </a>
-        <a target="_blank" href="https://www.youtube.com/c/kuriyamacory" rel="noopener noreferrer">
-          <div className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-500 px-4 rounded-lg border-2 border-blue-200 bg-red-600 ring-2 ring-red-900 hover:text-white">
-            Youtube
-          </div>
-        </a>
-        <a target="_blank" href="https://twitter.com/kuriyamacory" rel="noopener noreferrer">
-          <div className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-500 px-4 rounded-lg border-2 border-blue-200 bg-blue-600 ring-2 ring-blue-900 font-bold hover:text-white">
-            Twitter
-          </div>
-        </a>
-        <a target="_blank" href="https://coryshop.booth.pm/" rel="noopener noreferrer">
-          <div className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-500 px-4 rounded-lg border-2 border-blue-200 bg-red-500 ring-2 ring-red-900 font-bold hover:text-white">
-            BOOTH
-          </div>
-        </a>
-        <a target="_blank" href="https://cory.fanbox.cc/" rel="noopener noreferrer">
-          <div className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-500 px-4 rounded-lg border-2 border-blue-200 bg-yellow-400 ring-2 ring-yellow-900 font-bold hover:text-white">
-            FANBOX
-          </div>
-        </a>
-      </div><div className="mt-4 gap-4 md:flex md:justify-center items-center">
-        <div className="text-center">
-          <a target="_blank" href="https://store.line.me/stickershop/product/16299488" rel="noopener noreferrer">
-            <Image src="/images/line_stamp.jpg" alt="logo" width={320} height={240} layout="intrinsic" />
-          </a>
-        </div>
-        <div className="text-center">
-          <SubscriptionStampViewer />
-        </div>
-        <div className="py-8"></div>
-      </div>
-    </>
-  )
-}
-
-const Home: NextPage = () => {
+const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ logo, avatar, ad, emotes, badges }) => {
   const [mobileStyle, setMobileStyle] = useState(true);
 
   const handleResize = () => {
@@ -67,36 +29,26 @@ const Home: NextPage = () => {
 
   const Index = () => {
     return (
-      < div className="w-full" >
-        <div className="justify-center items-end md:flex">
-          <div className="px-4 pt-4 md:p-0 md:mb-16">
-            <div className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-500">
-              <Image src="/images/logo.png" alt="logo" width={750} height={264} layout="intrinsic" />
-            </div>
-            <LinkBar />
-          </div>
-          <div className="text-center">
-            <Image src="/images/cory_avatar.png" alt="avatar" width={666} height={850} layout="intrinsic" />
-          </div>
+      <div className="justify-center items-end md:flex">
+        <div className="px-4 pt-4 md:p-0 md:mb-16">
+          <Logo image={logo.image} />
+          <LinkBar />
+          <Ad emotes={emotes} badges={badges} image={ad.image} />
         </div>
-      </div >
+        <Avatar image={avatar.image} />
+      </div>
     )
   }
 
   const MobileIndex = () => {
     return (
-      <div className="w-full">
-        <div className="justify-center items-end md:flex">
-          <div className="px-4 pt-4 md:p-0 md:mb-16">
-            <div className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-500">
-              <Image src="/images/logo.png" alt="logo" width={750} height={264} layout="intrinsic" />
-            </div>
-          </div>
-          <div className="text-center">
-            <Image src="/images/cory_avatar.png" alt="avatar" width={666} height={850} layout="intrinsic" />
-          </div>
-          <LinkBar />
+      <div className="justify-center items-end md:flex">
+        <div className="px-4 pt-4 md:p-0 md:mb-16">
+          <Logo image={logo.image} />
         </div>
+        <Avatar image={avatar.image} />
+        <LinkBar />
+        <Ad emotes={emotes} badges={badges} image={ad.image} />
       </div>
     )
   }
@@ -108,4 +60,35 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home
+export default Home;
+
+export const getStaticProps: GetStaticProps<{ logo: ComponentModel, avatar: ComponentModel, ad: ComponentModel, emotes: EmoteDatas[], badges: InfoData[] }> = async () => {
+  try {
+    const logoRes = await axiosInstance.get("components", { params: { type: HOME_COMPONENT_LOGO } });
+    const logo = logoRes.data as ComponentModel;
+
+    const avatarRes = await axiosInstance.get("components", { params: { type: HOME_COMPONENT_AVATAR } });
+    const avatar = avatarRes.data as ComponentModel;
+
+    const adRes = await axiosInstance.get("components", { params: { type: HOME_COMPONENT_AD } });
+    const ad = adRes.data as ComponentModel;
+
+    const emotesRes = await axiosInstance.get("twitch/emotes");
+    const emotes = emotesRes.data as EmoteDatas[];
+
+    const badgesRes = await axiosInstance.get("twitch/badges")
+    const badgesSource = badgesRes.data as InfoData[];
+    const badges = badgesSource.filter(v => parseInt(v.name, 10) < 100).sort((a, b) => parseInt(a.name, 10) - parseInt(b.name, 10));
+
+    return {
+      props: {
+        logo, avatar, ad, emotes, badges
+      },
+      revalidate: 30
+    }
+  } catch {
+    return {
+      notFound: true
+    }
+  }
+};

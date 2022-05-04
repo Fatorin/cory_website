@@ -7,7 +7,7 @@ const ExternalLink: NextPage = () => {
         <Layout>
             <div className="w-full">
                 <div className="pt-16 text-center">
-                    <span className="md:text-8xl text-4xl px-8 border-2 rounded-2xl border-blue-500 font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-violet-900">外部リンク</span>
+                    <span className="md:text-6xl text-4xl px-8 border-2 rounded-2xl border-blue-500 font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-violet-900">外部リンク</span>
                 </div>
                 <div className="py-8 grid grid-cols-1 md:grid-cols-2 gap-2 justify-center items-center">
                     <div className="flex justify-center items-center">

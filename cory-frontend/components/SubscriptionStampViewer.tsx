@@ -1,12 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { EmoteDatas, InfoData } from "../models/infoData";
-import { axiosInstance } from "../utils/api";
+import { useRef, useState } from "react";
 import Image from 'next/image'
+import { StampType } from "../utils/propsType";
 
-const SubscriptionStampViewer = () => {
+const SubscriptionStampViewer = ({ emotes, badges }: StampType) => {
     const [toggle, setToggle] = useState(true);
-    const [emotes, setEmotes] = useState<EmoteDatas[]>([]);
-    const [badges, setBadges] = useState<InfoData[]>([]);
     const scrollView = useRef<HTMLDivElement>(null);
 
     const SetView = (tg: boolean) => {
@@ -79,44 +76,9 @@ const SubscriptionStampViewer = () => {
         )
     }
 
-    useEffect(() => {
-        const getBadges = async () => {
-            await axiosInstance.get("twitch/badges")
-                .then(({ data }) => {
-                    badgesSort(data);
-                })
-                .catch((e) => {
-                    console.log("Error");
-                    console.log(e);
-                })
-        }
-
-        const badgesSort = (datas: InfoData[]) => {
-            const filterDatas = datas.filter(v => parseInt(v.name, 10) < 100).sort((a, b) => parseInt(a.name, 10) - parseInt(b.name, 10));
-            setBadges(filterDatas);
-        }
-
-        getBadges();
-    }, [])
-
-    useEffect(() => {
-        const getEmotes = async () => {
-            await axiosInstance.get("twitch/emotes")
-                .then(({ data }) => {
-                    setEmotes(data);
-                })
-                .catch((e) => {
-                    console.log("Error");
-                    console.log(e);
-                })
-        }
-
-        getEmotes();
-    }, [])
-
     return (
         <div className="md:w-80 h-60 px-2">
-            <div ref={scrollView} className="border-2 rounded-tl-2xl h-5/6 overscroll-none overflow-auto bg-gradient-to-b from-white to-cyan-300">
+            <div ref={scrollView} className="border-2 rounded-t-2xl h-5/6 close-scrollbar overflow-auto bg-gradient-to-b from-white to-cyan-300">
                 {toggle ? <StampViewer /> : <BadgeViewer />}
             </div>
             <div className="h-1/6 rounded-lg flex">
