@@ -1,14 +1,8 @@
 import Link from "next/link";
 
-const variants = {
-    hidden: { opacity: 0, x: -200, y: 0 },
-    enter: { opacity: 1, x: 0, y: 0 },
-    exit: { opacity: 0, x: 0, y: -100 },
-}
-
 export const Nav = (props: any) => {
     return (
-        <div className="w-full">
+        <>
             <nav id="bottom-navigation" className="md:w-4/5 block fixed rounded-t-2xl z-10 inset-x-0 bottom-0 bg-white bg-opacity-75 md:bg-opacity-40 shadow mx-auto">
                 <div id="tabs" className="flex justify-between">
                     <Link href="/" passHref>
@@ -43,17 +37,11 @@ export const Nav = (props: any) => {
                             <span className="tab tab-home block text-xs">参加型の説明</span>
                         </div>
                     </Link>
-                    <Link href="/externallink" passHref>
-                        <div className="w-full focus:text-teal-500 hover:text-teal-500 justify-center inline-block text-center pt-2 pb-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline-block mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                            </svg>
-                            <span className="tab tab-home block text-xs">外部リンク</span>
-                        </div>
-                    </Link>
                 </div>
             </nav >
-            <div className="min-h-screen">{props.children}</div>
-        </div >
+            <div className="min-h-screen relative">
+                {props.children}
+            </div>
+        </ >
     );
 }

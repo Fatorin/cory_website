@@ -2,10 +2,38 @@ export const APP_TEXT_HOME = "APP_TEXT_HOME";
 export const APP_TEXT_PROFILE = "APP_TEXT_PROFILE";
 export const APP_TEXT_RULE = "APP_TEXT_RULE";
 export const APP_TEXT_JOINWAY = "APP_TEXT_JOINWAY";
+export const APP_TEXT_EXTERNALLINK = "APP_TEXT_EXTERNALLINK";
 
-export const AppTextSetting = {
-    APP_TEXT_HOME: 1,
-    APP_TEXT_PROFILE: 2,
-    APP_TEXT_RULE: 3,
-    APP_TEXT_JOINWAY: 4,
+export const AppTextSetting: { [key: string]: number } = {
+    "APP_TEXT_HOME": 1,
+    "APP_TEXT_PROFILE": 2,
+    "APP_TEXT_RULE": 3,
+    "APP_TEXT_JOINWAY": 4,
+    "APP_TEXT_EXTERNALLINK": 5
 }
+
+export const IMAGE_TAG_HOME = "IMAGE_TAG_HOME";
+export const IMAGE_TAG_PROFILE = "IMAGE_TAG_PROFILE";
+export const IMAGE_TAG_RULE = "IMAGE_TAG_RULE";
+export const IMAGE_TAG_JOINWAY = "IMAGE_TAG_JOINWAY";
+export const IMAGE_TAG_EXTERNALLINK = "IMAGE_TAG_EXTERNALLINK";
+export const IMAGE_TAG_OTHER = "IMAGE_TAG_OTHER";
+
+export const ImageTag: { [key: string]: number } = {
+    "IMAGE_TAG_HOME": 1,
+    "IMAGE_TAG_PROFILE": 2,
+    "IMAGE_TAG_RULE": 3,
+    "IMAGE_TAG_JOINWAY": 4,
+    "IMAGE_TAG_EXTERNALLINK": 5,
+    "IMAGE_TAG_OTHER": 6,
+}
+
+//HOME 1000
+export const HOME_COMPONENT_LOGO = 1001;
+export const HOME_COMPONENT_AVATAR = 1002;
+export const HOME_COMPONENT_AD = 1003;
+//PROFILE 2000
+export const PROFILE_COMPONENT_ICON = 2001;
+//RULE 3000
+//JOINWAY 4000
+//EXTERNALLLINK 5000

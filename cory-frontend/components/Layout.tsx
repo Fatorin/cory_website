@@ -1,15 +1,16 @@
 import { Nav } from "./Nav";
+import Image from 'next/image'
 
 export const Layout = (props: any) => {
     return (
-        <>
-            <div className="bg-gradient-to-b from-blue-200 to-cyan-400">
-                <div className="absolute w-full h-full pointer-events-none">
-                    <div className="absolute left-0 -top-12 h-3/5 min-w-full opacity-25 bg-repeat-x" style={{ backgroundImage: `url("/images/bg_up.png")` }} />
-                    <div className="absolute right-0 bottom-0 h-2/5 min-w-full opacity-25 bg-repeat-x" style={{ backgroundImage: `url("/images/bg_down.png")` }} />
-                </div>
-                <Nav>{props.children}</Nav>
+        <div className="relative bg-gradient-to-b from-blue-50 to-cyan-400">
+            <div className="absolute -top-24 opacity-25 pointer-events-none">
+                <Image src="/images/bg_up.png" alt="logo" width={2048} height={382} layout="intrinsic" />
             </div>
-        </>
+            <div className="absolute bottom-0 opacity-25 pointer-events-none">
+                <Image src="/images/bg_down.png" alt="logo" width={2048} height={584} layout="intrinsic" />
+            </div>
+            <Nav>{props.children}</Nav>
+        </div>
     );
 }
