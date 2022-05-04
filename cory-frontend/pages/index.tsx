@@ -76,7 +76,7 @@ export const getStaticProps: GetStaticProps<{ logo: ComponentModel, avatar: Comp
     const emotesRes = await axiosInstance.get("twitch/emotes");
     const emotes = emotesRes.data as EmoteDatas[];
 
-    const badgesRes = await axiosInstance.get("twitch/badges")
+    const badgesRes = await axiosInstance.get("twitch/badges");
     const badgesSource = badgesRes.data as InfoData[];
     const badges = badgesSource.filter(v => parseInt(v.name, 10) < 100).sort((a, b) => parseInt(a.name, 10) - parseInt(b.name, 10));
 
