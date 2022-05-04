@@ -52,7 +52,7 @@ func Images(c *fiber.Ctx) error {
 }
 
 func AddImage(c *fiber.Ctx) error {
-	var image models.Image
+	image := models.Image{}
 
 	if err := c.BodyParser(&image); err != nil {
 		return err
