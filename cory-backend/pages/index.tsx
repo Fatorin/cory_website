@@ -16,19 +16,19 @@ const Index: NextPage = () => {
       case 2:
         return (<ImagerViewer />);
       default:
-        return (<></>)
+        return  null;
     }
   }
 
   return (
     <Layout>
       <h1 className="text-6xl py-4 text-center">グローバル設定</h1>
-      <div className="flex flex-wrap justify-center gap-4">
+      <div className="flex flex-wrap justify-center gap-4 my-4">
         <button className="shadow bg-gray-500 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" onClick={(e) => setView(0)}>言語設定</button>
         <button className="shadow bg-gray-500 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" onClick={(e) => setView(1)}>パスワード設定</button>
         <button className="shadow bg-gray-500 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" onClick={(e) => setView(2)}>イメージ管理</button>
       </div>
-      <div className="flex justify-center items-center pt-8">
+      <div className="flex justify-center items-center">
         <ControlView />
       </div>
     </Layout>

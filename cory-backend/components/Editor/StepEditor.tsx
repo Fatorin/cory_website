@@ -1,16 +1,19 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { NotificationContext } from "../../components/Notification/Notification";
 import { AppText } from "../../models/apptext";
 import { Language } from "../../models/language";
 import { axiosInstance } from "../../utils/api";
 import { ERROR_MSG_UPDATE_FAIL, ERROR_MSG_UPDATE_SUCCESS } from "../../utils/commonErrorMessage";
+import Image from "next/image";
+import ImageSelector from "../ImageManager/ImageSelector";
 
 type EditorType = {
     title: string;
     editorType: number;
+    turnOnImageSelector?: boolean;
 }
 
-const StepEditor = ({ title, editorType }: EditorType) => {
+const NewStepEditor = ({ title, editorType, turnOnImageSelector }: EditorType) => {
     const [languages, setLanguages] = useState<Language[]>([]);
     const [appTexts, setAppTexts] = useState<AppText[]>([]);
     const [currentLangId, setCurrentLangId] = useState("");
@@ -33,6 +36,16 @@ const StepEditor = ({ title, editorType }: EditorType) => {
         setAppTexts(temp);
     }
 
+    const setAppTextImageByOrder = (order: number, urls: string[]) => {
+        let temp = [...appTexts]
+        temp.forEach((appText) => {
+            if (appText.order == order) {
+                appText.image = urls[0];
+            }
+        })
+        setAppTexts(temp);
+    }
+
     const addStep = () => {
         let temp = sourceAppTexts.find(v => v.order == appTexts.length + 1);
 
@@ -44,6 +57,7 @@ const StepEditor = ({ title, editorType }: EditorType) => {
             temp.type = editorType;
             temp.order = appTexts.length + 1;
             temp.text = "";
+            temp.image = "";
         }
 
         const tempList = [...appTexts, temp]
@@ -84,11 +98,10 @@ const StepEditor = ({ title, editorType }: EditorType) => {
         })
 
         if (hasError) {
-            addMessage(ERROR_MSG_UPDATE_SUCCESS, true);
-        } else {
             addMessage(ERROR_MSG_UPDATE_FAIL, false);
+        } else {
+            addMessage(ERROR_MSG_UPDATE_SUCCESS, true);
         }
-
     }
 
     const insertAppTextApi = async (appText: AppText) => {
@@ -194,20 +207,30 @@ const StepEditor = ({ title, editorType }: EditorType) => {
                     })}
                 </select>
                 <button className="shadow bg-gray-500 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white px-4 py-2 rounded" type="button" onClick={() => addStep()}>
-                    ステップを追加
+                    追加
                 </button>
                 <button className="shadow bg-gray-500 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white px-4 py-2 rounded" type="button" onClick={() => removeStep()}>
-                    最後のステップを削除します
+                    最後のを削除します
                 </button>
                 <button className="shadow bg-green-500 hover:bg-green-400 focus:shadow-outline focus:outline-none text-white px-4 py-2 rounded" type="button" onClick={() => updateAppText()}>
                     アップデート
                 </button>
             </div>
-            {appTexts.length == 0 ? <div className="text-center my-8 text-4xl italic">この言語のステップはまだ作りません</div> : <div>
+            {appTexts.length == 0 ? <div className="text-center my-8 text-4xl italic">この言語のはまだ作りません</div> : <div>
                 {appTexts.map((appText) => {
-                    return <div key={appText.order} className="mx-auto md:w-2/3 w-full align-middle my-2 p-4 rounded-xl bg-gradient-to-tr from-sky-100 to-teal-200 border border-emerald-500 animate-fadeIn">
-                        <h2 className="block text-center text-xl font-bold pb-3">ステップ {appText.order}</h2>
-                        <textarea className="h-16 appearance-none border border-gray-200 rounded w-full leading-tight focus:outline-none focus:bg-white focus:border-gray-500 resize-none" value={appText.text} onChange={(e) => setAppTextsByOrder(appText.order, e.target.value)} />
+                    return <div key={appText.order} className="mx-auto md:w-2/3 w-full align-middle my-2 p-4 rounded-xl bg-gradient-to-tr from-sky-100 to-teal-200 border-2 border-emerald-500 animate-fadeIn">
+                        <h2 className="block text-center text-xl font-bold pb-3">{title} {appText.order}</h2>
+                        <div className="flex gap-2">
+                            {turnOnImageSelector ? <div className="flex flex-col bg-gray-200 rounded-lg justify-center items-center">
+                                <ImageSelector callback={(urls) => {
+                                    setAppTextImageByOrder(appText.order, urls);
+                                }}
+                                    limit={1} >
+                                    <Image className="rounded-lg" src={appText.image != "" ? process.env.NEXT_PUBLIC_API_URL + appText.image : "/himitukichi/images/placeholder.png"} height={128} width={128} layout="intrinsic" alt="loading" placeholder="empty" objectFit="contain" />
+                                </ImageSelector>
+                            </div> : null}
+                            <textarea className="appearance-none border border-gray-200 rounded w-full leading-tight focus:outline-none focus:bg-white focus:border-gray-500 resize-none" value={appText.text} onChange={(e) => setAppTextsByOrder(appText.order, e.target.value)} />
+                        </div>
                     </div>
                 })}
             </div>}
@@ -215,4 +238,4 @@ const StepEditor = ({ title, editorType }: EditorType) => {
     )
 }
 
-export default StepEditor;
+export default NewStepEditor;

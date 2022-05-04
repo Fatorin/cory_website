@@ -124,37 +124,35 @@ export const LanguageEditor = () => {
     }, [fetchData])
 
     return (
-        <>
-            <div className="w-full md:w-fit rounded-xl overflow-hidden bg-gradient-to-r from-emerald-50 to-teal-100 border border-emerald-500">
-                <table className="table-auto text-center align-middle text-xs md:text-base w-full md:w-fit">
-                    <caption className="py-2 text-xl font-bold">言語設定</caption>
-                    <thead>
-                        <tr>
-                            {defaultThead.map(thead => {
-                                return <td className="border-emerald-500 px-4 py-2" key={thead.key}>{thead.name}</td>
-                            })}
+        <div className="w-full md:w-fit rounded-xl overflow-hidden bg-gradient-to-r from-emerald-50 to-teal-100 border border-emerald-500">
+            <table className="table-auto text-center align-middle text-xs md:text-base w-full md:w-fit">
+                <caption className="py-2 text-xl font-bold">言語設定</caption>
+                <thead>
+                    <tr>
+                        {defaultThead.map(thead => {
+                            return <td className="border-emerald-500 px-4 py-2" key={thead.key}>{thead.name}</td>
+                        })}
+                    </tr>
+                </thead>
+                <tbody>
+                    {languages.map(language => {
+                        return <tr key={language.id}>
+                            <td className="border-emerald-500 px-4 py-2 font-medium">{language.name}</td>
+                            <td className="border-emerald-500 px-4 py-2 font-medium">{language.nick_name}</td>
+                            <td className="border-emerald-500 px-4 py-2 font-medium">{language.region}</td>
+                            <td className="border-emerald-500 px-4 py-2 font-medium">{toggleButton(language)}</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {languages.map(language => {
-                            return <tr key={language.id}>
-                                <td className="border-emerald-500 px-4 py-2 font-medium">{language.name}</td>
-                                <td className="border-emerald-500 px-4 py-2 font-medium">{language.nick_name}</td>
-                                <td className="border-emerald-500 px-4 py-2 font-medium">{language.region}</td>
-                                <td className="border-emerald-500 px-4 py-2 font-medium">{toggleButton(language)}</td>
-                            </tr>
-                        })}
-                    </tbody>
-                </table>
-                {defaultLangs.length == 1 ? null : <div className="py-2 pr-2 float-right">
-                    <select className="border-slate-500 rounded-xl border" onChange={(e) => setCurrentLang(e.target.value)}>
-                        {defaultLangs.map((lang) => {
-                            return <option key={lang.region} value={lang.region}>{lang.nickname}</option>
-                        })}
-                    </select>
-                    <button className="border-slate-500 rounded-xl border bg-yellow-400 px-2 ml-4 hover:bg-yellow-200 active:bg-yellow-100" disabled={addBtn} onClick={() => addLanguage()}>追加する</button>
-                </div>}
-            </div>
-        </>
+                    })}
+                </tbody>
+            </table>
+            {defaultLangs.length == 1 ? null : <div className="py-2 pr-2 float-right">
+                <select className="border-slate-500 rounded-xl border" onChange={(e) => setCurrentLang(e.target.value)}>
+                    {defaultLangs.map((lang) => {
+                        return <option key={lang.region} value={lang.region}>{lang.nickname}</option>
+                    })}
+                </select>
+                <button className="border-slate-500 rounded-xl border bg-yellow-400 px-2 ml-4 hover:bg-yellow-200 active:bg-yellow-100" disabled={addBtn} onClick={() => addLanguage()}>追加する</button>
+            </div>}
+        </div>
     )
 }
