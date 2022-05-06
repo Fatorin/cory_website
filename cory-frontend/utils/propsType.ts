@@ -2,6 +2,12 @@ import { EmoteDatas, InfoData } from "../models/infoData"
 
 export type ImageURLType = {
     image: string
+    text?: string
+}
+
+export type ADType = {
+    images: string[]
+    texts: string[]
 }
 
 export type StampType = {

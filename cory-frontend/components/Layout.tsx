@@ -4,7 +4,7 @@ import Image from 'next/image'
 export const Layout = (props: any) => {
     return (
         <div className="relative bg-gradient-to-b from-blue-50 to-cyan-400">
-            <div className="absolute -top-24 opacity-25 pointer-events-none">
+            <div className="absolute top-0 md:-top-24 opacity-25 pointer-events-none">
                 <Image src="/images/bg_up.png" alt="logo" width={2048} height={382} layout="intrinsic" />
             </div>
             <div className="absolute bottom-0 opacity-25 pointer-events-none">

@@ -67,6 +67,7 @@ export const StepViewer = ({ title, editorType }: EditorType) => {
                     return <div key={v.id} className="mt-2 p-4 bg-white bg-opacity-50 ring-1 ring-blue-800 border-2 rounded-lg border-blue-400 text-left">{v.text}</div>
                 })}
             </div>
+            <div className="pb-16"/>
         </>
     )
 }

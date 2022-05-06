@@ -9,6 +9,7 @@ import { ComponentModel } from '../models/component'
 import { Logo } from '../components/Index/Logo'
 import { EmoteDatas, InfoData } from '../models/infoData'
 import { Ad } from '../components/Index/Ad'
+import SubscriptionStampViewer from '../components/SubscriptionStampViewer'
 
 const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ logo, avatar, ad, emotes, badges }) => {
   const [mobileStyle, setMobileStyle] = useState(true);
@@ -29,11 +30,14 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ logo, 
 
   const Index = () => {
     return (
-      <div className="justify-center items-end md:flex">
+      <div className="flex justify-center items-end">
         <div className="px-4 pt-4 md:p-0 md:mb-16">
           <Logo image={logo.image} />
           <LinkBar />
-          <Ad emotes={emotes} badges={badges} image={ad.image} />
+          <div className="mt-4 gap-4 md:flex md:justify-center items-center">
+            <Ad images={ad.image.split(',')} texts={ad.text.split(',')} />
+            <SubscriptionStampViewer emotes={emotes} badges={badges} />
+          </div>
         </div>
         <Avatar image={avatar.image} />
       </div>
@@ -42,13 +46,17 @@ const Home: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({ logo, 
 
   const MobileIndex = () => {
     return (
-      <div className="justify-center items-end md:flex">
+      <div className="justify-center items-end">
         <div className="px-4 pt-4 md:p-0 md:mb-16">
           <Logo image={logo.image} />
         </div>
         <Avatar image={avatar.image} />
         <LinkBar />
-        <Ad emotes={emotes} badges={badges} image={ad.image} />
+        <div className="mt-4 gap-4 flex flex-col md:justify-center items-center">
+          <Ad images={ad.image.split(',')} texts={ad.text.split(',')} />
+          <SubscriptionStampViewer emotes={emotes} badges={badges} />
+          <div className="py-8"></div>
+        </div>
       </div>
     )
   }

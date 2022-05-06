@@ -77,7 +77,7 @@ const SubscriptionStampViewer = ({ emotes, badges }: StampType) => {
     }
 
     return (
-        <div className="md:w-80 h-60 px-2">
+        <div className="w-80 h-60 text-center">
             <div ref={scrollView} className="border-2 rounded-t-2xl h-5/6 close-scrollbar overflow-auto bg-gradient-to-b from-white to-cyan-300">
                 {toggle ? <StampViewer /> : <BadgeViewer />}
             </div>
