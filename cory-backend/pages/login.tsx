@@ -35,8 +35,9 @@ const Login: NextPage = () => {
                 dispatch(setUserId(data.id));
                 router.push("/");
             })
-            .catch(() => {
+            .catch((e) => {
                 addMessage(ERROR_MSG_SERVER_CONNECT_FAIL, false);
+                console.log(e);
             })
 
         setIsLoading(false);

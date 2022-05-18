@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['localhost','kuriyamacory.com'],
+    domains: ['localhost','www.kuriyamacory.com'],
   },
   basePath: '/himitukichi',
 }
