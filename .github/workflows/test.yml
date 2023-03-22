@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set ENV for Testing
-        if: ${{ github.event.inputs.environment }} == 'Test'
+        if: github.event.inputs.environment == 'Test'
         run: |
           echo "DOCKERFILE_NAME=Dockerfile.server" >> "$GITHUB_ENV"
           echo "REPOSITORY=arcade-galaxy" >> "$GITHUB_ENV"
@@ -32,7 +32,7 @@ jobs:
           echo "EB_APP_ENV=ag-testing-env" >> "$GITHUB_ENV"
 
       - name: Set ENV for Beta
-        if: ${{ github.event.inputs.environment }} == 'Beta'
+        if: github.event.inputs.environment == 'Beta'
         run: |
           echo "DOCKERFILE_NAME=Dockerfile.beta.server" >> "$GITHUB_ENV"
           echo "REPOSITORY=arcade-galaxy-beta" >> "$GITHUB_ENV"
