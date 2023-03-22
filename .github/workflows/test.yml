@@ -30,7 +30,7 @@ jobs:
             echo "REPOSITORY=arcade-galaxy" >> "$GITHUB_ENV"
             echo "EB_APP_NAME=ag-testing" >> "$GITHUB_ENV"
             echo "EB_APP_ENV=ag-testing-env" >> "$GITHUB_ENV"
-            
+          fi            
           if [[ ${{ github.event.inputs.environment }} == 'Beta' ]]; then
             echo "DOCKERFILE_NAME=Dockerfile.beta.server" >> "$GITHUB_ENV"
             echo "REPOSITORY=arcade-galaxy-beta" >> "$GITHUB_ENV"
