@@ -1,0 +1,38 @@
+name: Deploy Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: Choose your environment
+        required: true
+        options:
+          - Test
+          - Beta
+  #schedule:
+  #  - cron: '0 0 * * *'
+
+run-name: Deploy to ${{ github.event.inputs.environment }}
+
+env:
+  AWS_REGION: ap-northeast-1
+
+jobs:
+  ci:
+    name: Test Env
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set ENV
+        run: |
+          if [[ ${{ github.event.inputs.environment }} == 'Beta' ]]; then
+            echo "REPOSITORY=arcade-galaxy-beta" >> "$GITHUB_ENV"
+            echo "EB_APP_NAME=ag-beta" >> "$GITHUB_ENV"
+            echo "EB_APP_ENV=ag-beta-env" >> "$GITHUB_ENV"
+          fi
+
+      - name: Check ENV
+        run: |
+          echo REPOSITORY = ${{ env.REPOSITORY }}
+          echo EB_APP_NAME = ${{ env.EB_APP_NAME }}
+          echo EB_APP_ENV = ${{ env.EB_APP_ENV }}
