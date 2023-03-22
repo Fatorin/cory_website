@@ -25,14 +25,24 @@ jobs:
     steps:
       - name: Set ENV
         run: |
+          if [[ ${{ github.event.inputs.environment }} == 'Test' ]]; then
+            echo "DOCKERFILE_NAME=Dockerfile.server" >> "$GITHUB_ENV"
+            echo "REPOSITORY=arcade-galaxy" >> "$GITHUB_ENV"
+            echo "EB_APP_NAME=ag-testing" >> "$GITHUB_ENV"
+            echo "EB_APP_ENV=ag-testing-env" >> "$GITHUB_ENV"
+            
           if [[ ${{ github.event.inputs.environment }} == 'Beta' ]]; then
+            echo "DOCKERFILE_NAME=Dockerfile.beta.server" >> "$GITHUB_ENV"
             echo "REPOSITORY=arcade-galaxy-beta" >> "$GITHUB_ENV"
             echo "EB_APP_NAME=ag-beta" >> "$GITHUB_ENV"
             echo "EB_APP_ENV=ag-beta-env" >> "$GITHUB_ENV"
           fi
 
       - name: Check ENV
+        env:
+          REPOSITORY: $${{ env.REPOSITORY }}
         run: |
+          echo DOCKERFILE_NAME = ${{ env.DOCKERFILE_NAME }}
           echo REPOSITORY = ${{ env.REPOSITORY }}
           echo EB_APP_NAME = ${{ env.EB_APP_NAME }}
           echo EB_APP_ENV = ${{ env.EB_APP_ENV }}
