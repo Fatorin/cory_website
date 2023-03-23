@@ -89,7 +89,9 @@ jobs:
           files: Dockerrun.aws.json
 
       - name: Package Dockerrun.aws.json
+        env:
+          TAG_OUTPUT: ${{ needs.ci.outputs.TAG_OUTPUT }}
         run: |
-          sed -i -e "s|@IMAGE|${{ needs.ci.outputs.TAG_OUTPUT }}|g" Dockerrun.aws.json
+          sed -i -e "s|@IMAGE|$TAG_OUTPUT|g" Dockerrun.aws.json
           zip -r "deploy.zip" Dockerrun.aws.json
           echo "${{ needs.ci.outputs.TAG_OUTPUT }}"
