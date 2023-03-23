@@ -63,7 +63,7 @@ jobs:
         id: filesinfo
         uses: juliangruber/read-file-action@v1
         with:
-          path: ./AG_UnityProject/Asserts/Scripts/Scripts/Test.txt
+          path: ./AG_UnityProject/Asserts/ServerShared/Scripts/Test.txt
           
       - name: Echo Dockerfile
         run: echo "${{ steps.filesinfo.outputs.content }}"
