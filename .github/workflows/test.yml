@@ -53,7 +53,7 @@ jobs:
       - name: Checkout files
         uses: Bhacaz/checkout-files@v2
         with:
-          files: Dockerrun.aws.json AG_Server 'AG_UnityProject/Assets/ServerShared' ${{ env.FILE_PATH }}
+          files: Dockerrun.aws.json AG_Server ./AG_UnityProject/Assets/ServerShared ${{ env.FILE_PATH }}
          
       - name: Change aws file  
         run: |
