@@ -51,7 +51,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ci]
     steps:
-
       - name: Check ENV
         run: |
           echo DOCKERFILE_NAME = ${{ needs.ci.outputs.DOCKERFILE_NAME }}
@@ -62,11 +61,11 @@ jobs:
       - name: Checkout files
         uses: Bhacaz/checkout-files@v2
         with:
-          files: Dockerrun.aws.json AG_Server AG_UnityProject/Assets/ServerShared ${{ needs.ci.outputs.DOCKERFILE_NAME }}
+          files: Dockerrun.aws.json AG_Server AG_UnityProject/Assets/ServerShared GlobalShared ${{ needs.ci.outputs.DOCKERFILE_NAME }}
          
       - name: Change aws file  
         run: |
-          sed -i -e "s|@IMAGE|${{ needs.ci.outputs.IMAGE_TAG }}|g" Dockerrun.aws.json
+          sed -i -e "s|@IMAGE|${{ needs.ci.outputs.DOCKERFILE_NAME }}|g" Dockerrun.aws.json
 
       - name: Read Dockerfile
         id: filesinfo
