@@ -52,7 +52,7 @@ jobs:
       - name: Checkout files
         uses: Bhacaz/checkout-files@v2
         with:
-         files: Dockerrun.aws.json cory-home
+         files: Dockerrun.aws.json cory-frontend cory-home/Dockerfile
          
       - name: Change aws file  
         run: |
