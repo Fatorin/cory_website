@@ -61,12 +61,12 @@ jobs:
       - name: Get timestamp
         id: get_timestamp
         shell: bash
-        run: echo "$(env TZ=Asia/Tokyo date '+%Y%m%d%H%M%S')" >> "$GITHUB_OUTPUT"
+        run: echo "timestamp=$(env TZ=Asia/Tokyo date '+%Y%m%d%H%M%S')" >> "$GITHUB_OUTPUT"
 
       - name: Get Elastic Beanstalk label
         id: get_label
         shell: bash
-        run: echo "$(echo ${TAG}-${TIMESTAMP})" >> "$GITHUB_OUTPUT"
+        run: echo "label=$(echo ${TAG}-${TIMESTAMP})" >> "$GITHUB_OUTPUT"
         env:
           TAG: ${{ needs.build.outputs.IMAGE_OUTPUT }}
           TIMESTAMP: ${{ steps.get_timestamp.outputs.timestamp }}
