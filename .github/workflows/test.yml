@@ -53,7 +53,7 @@ jobs:
       - name: Checkout files
         uses: Bhacaz/checkout-files@v2
         with:
-          files: AG_Server AG_UnityProject/Asserts/ServerShared ${{ env.FILE_PATH }}
+          files: AG_Server AG_UnityProject/Assets/ServerShared ${{ env.FILE_PATH }}
          
       - name: Change aws file  
         run: |
@@ -63,7 +63,7 @@ jobs:
         id: filesinfo
         uses: juliangruber/read-file-action@v1
         with:
-          path: ./AG_UnityProject/Asserts/ServerShared/Scripts/Test.txt
+          path: ./AG_UnityProject/Assets/ServerShared/Scripts/Test.txt
           
       - name: Echo Dockerfile
         run: echo "${{ steps.filesinfo.outputs.content }}"
