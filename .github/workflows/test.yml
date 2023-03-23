@@ -18,6 +18,7 @@ run-name: Deploy to ${{ github.event.inputs.environment }}
 env:
   AWS_REGION: ap-northeast-1
   IMAGE_TAG: test-image:latest
+  FILE_PATH: cory-home/go.mod
 
 jobs:
   ci:
@@ -52,7 +53,7 @@ jobs:
       - name: Checkout files
         uses: Bhacaz/checkout-files@v2
         with:
-         files: Dockerrun.aws.json cory-frontend cory-home/Dockerfile
+         files: Dockerrun.aws.json cory-home/Dockerfile ${{ env.FILE_PATH }}
          
       - name: Change aws file  
         run: |
@@ -75,11 +76,6 @@ jobs:
           
       - name: Echo AWS JSON
         run: echo "${{ steps.awsjson.outputs.content }}"
-
-      - uses: snow-actions/sparse-checkout@v1.2.0
-        with:
-          patterns: |
-            ./*
       
       - name: Show files struct
         run: ls
