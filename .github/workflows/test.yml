@@ -29,6 +29,7 @@ jobs:
       REPOSITORY: ${{ env.REPOSITORY }}
       EB_APP_NAME: ${{ env.EB_APP_NAME }}
       EB_APP_ENV: ${{ env.EB_APP_ENV }}
+      TAG_OUTPUT: ${{ steps.build-image.outputs.tag-ouput }}
     steps:
       - name: Set ENV for Testing
         if: github.event.inputs.environment == 'Test'
@@ -45,6 +46,14 @@ jobs:
           echo "REPOSITORY=arcade-galaxy-beta" >> "$GITHUB_ENV"
           echo "EB_APP_NAME=ag-beta" >> "$GITHUB_ENV"
           echo "EB_APP_ENV=ag-beta-env" >> "$GITHUB_ENV"
+
+      - name: build
+        id: build-image
+        env:
+          REGISTRY: "TEST"
+          REPOSITORY: ${{ needs.ci.outputs.REPOSITORY }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: echo "tag-ouput=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
   build:
     name: Build image
@@ -81,5 +90,6 @@ jobs:
 
       - name: Package Dockerrun.aws.json
         run: |
-          sed -i -e "s|@IMAGE|${{ needs.build.outputs.IMAGE_OUTPUT }}|g" Dockerrun.aws.json
+          sed -i -e "s|@IMAGE|${{ needs.build.outputs.TAG_OUTPUT }}|g" Dockerrun.aws.json
           zip -r "deploy.zip" Dockerrun.aws.json
+          echo "${{ needs.build.outputs.TAG_OUTPUT }}"
