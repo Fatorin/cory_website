@@ -49,7 +49,12 @@ jobs:
           echo REPOSITORY = ${{ env.REPOSITORY }}
           echo EB_APP_NAME = ${{ env.EB_APP_NAME }}
           echo EB_APP_ENV = ${{ env.EB_APP_ENV }}
-      
+
+  build:
+    name: Build image
+    runs-on: ubuntu-latest
+    needs: [ci]
+    steps:
       - name: Checkout files
         uses: Bhacaz/checkout-files@v2
         with:
