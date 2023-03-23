@@ -29,7 +29,7 @@ jobs:
       REPOSITORY: ${{ env.REPOSITORY }}
       EB_APP_NAME: ${{ env.EB_APP_NAME }}
       EB_APP_ENV: ${{ env.EB_APP_ENV }}
-      TAG_OUTPUT: ${{ steps.build-image.outputs.tag-ouput }}
+      TAG_OUTPUT: ${{ steps.build-image.outputs.tag }}
     steps:
       - name: Set ENV for Testing
         if: github.event.inputs.environment == 'Test'
@@ -53,7 +53,7 @@ jobs:
           REGISTRY: "TEST"
           REPOSITORY: ${{ needs.ci.outputs.REPOSITORY }}
           IMAGE_TAG: ${{ github.sha }}
-        run: echo "tag-ouput=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+        run: echo "tag=$REGISTRY/$REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
   build:
     name: Build image
@@ -90,6 +90,6 @@ jobs:
 
       - name: Package Dockerrun.aws.json
         run: |
-          sed -i -e "s|@IMAGE|${{ needs.build.outputs.TAG_OUTPUT }}|g" Dockerrun.aws.json
+          sed -i -e "s|@IMAGE|${{ needs.ci.outputs.TAG_OUTPUT }}|g" Dockerrun.aws.json
           zip -r "deploy.zip" Dockerrun.aws.json
-          echo "${{ needs.build.outputs.TAG_OUTPUT }}"
+          echo "${{ needs.ci.outputs.TAG_OUTPUT }}"
