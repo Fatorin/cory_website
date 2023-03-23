@@ -51,4 +51,20 @@ jobs:
       - name: Checkout files
         uses: Bhacaz/checkout-files@v2
         with:
-         files: README.md cory-home
+         files: Dockerrun.aws.json cory-home
+
+      - name: Read Dockerfile
+        id: filesinfo
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./cory-home/Dockerfile
+      - name: Echo Dockerfile
+        run: echo "${{ steps.filesinfo.outputs.content }}"
+      
+      - name: Read AWS json
+        id: awsjson
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./Dockerrun.aws.json
+      - name: Echo Dockerfile
+        run: echo "${{ steps.awsjson.outputs.content }}"
