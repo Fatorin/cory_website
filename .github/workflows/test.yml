@@ -17,6 +17,7 @@ run-name: Deploy to ${{ github.event.inputs.environment }}
 
 env:
   AWS_REGION: ap-northeast-1
+  IMAGE_TAG: test-image:latest
 
 jobs:
   ci:
@@ -62,6 +63,7 @@ jobs:
         uses: juliangruber/read-file-action@v1
         with:
           path: ./cory-home/Dockerfile
+          
       - name: Echo Dockerfile
         run: echo "${{ steps.filesinfo.outputs.content }}"
       
@@ -70,5 +72,6 @@ jobs:
         uses: juliangruber/read-file-action@v1
         with:
           path: ./Dockerrun.aws.json
-      - name: Echo Dockerfile
+          
+      - name: Echo AWS JSON
         run: echo "${{ steps.awsjson.outputs.content }}"
