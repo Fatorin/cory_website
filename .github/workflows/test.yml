@@ -62,8 +62,8 @@ jobs:
         uses: Bhacaz/checkout-files@v2
         with:
           files: Dockerrun.aws.json AG_Server AG_UnityProject/Assets/ServerShared GlobalShared ${{ needs.ci.outputs.DOCKERFILE_NAME }}
-         
-      - name: Change aws file  
+
+      - name: Change aws file
         run: |
           sed -i -e "s|@IMAGE|${{ needs.ci.outputs.DOCKERFILE_NAME }}|g" Dockerrun.aws.json
 
@@ -72,18 +72,34 @@ jobs:
         uses: juliangruber/read-file-action@v1
         with:
           path: ./AG_UnityProject/Assets/ServerShared/Scripts/Test.txt
-          
+
       - name: Echo Dockerfile
         run: echo "${{ steps.filesinfo.outputs.content }}"
-      
+
       - name: Read AWS json
         id: awsjson
         uses: juliangruber/read-file-action@v1
         with:
           path: ./Dockerrun.aws.json
-          
+
       - name: Echo AWS JSON
         run: echo "${{ steps.awsjson.outputs.content }}"
-      
+
       - name: Show files struct
         run: ls
+
+      - name: Get timestamp
+        id: get_timestamp
+        shell: bash
+        run: echo $(env TZ=Asia/Tokyo date '+%Y%m%d%H%M%S')
+
+      - name: Get Elastic Beanstalk label
+        id: get_label
+        shell: bash
+        run: echo $(echo ${TAG}-${TIMESTAMP})
+        env:
+          TAG: ${{ needs.build.outputs.IMAGE_OUTPUT }}
+          TIMESTAMP: ${{ steps.get_timestamp.outputs.timestamp }}
+
+      - name: Show Label
+        run: ${{ steps.get_label.outputs.label }}
