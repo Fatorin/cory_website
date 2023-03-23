@@ -24,6 +24,11 @@ jobs:
   ci:
     name: Test Env
     runs-on: ubuntu-latest
+    outputs:
+      DOCKERFILE_NAME: ${{ env.DOCKERFILE_NAME}}
+      REPOSITORY: ${{ env.REPOSITORY }}
+      EB_APP_NAME: ${{ env.EB_APP_NAME }}
+      EB_APP_ENV: ${{ env.EB_APP_ENV }}
     steps:
       - name: Set ENV for Testing
         if: github.event.inputs.environment == 'Test'
@@ -58,11 +63,11 @@ jobs:
       - name: Checkout files
         uses: Bhacaz/checkout-files@v2
         with:
-          files: Dockerrun.aws.json AG_Server AG_UnityProject/Assets/ServerShared ${{ env.DOCKERFILE_NAME }}
+          files: Dockerrun.aws.json AG_Server AG_UnityProject/Assets/ServerShared ${{ needs.ci.outputs.DOCKERFILE_NAME }}
          
       - name: Change aws file  
         run: |
-          sed -i -e "s|@IMAGE|${{ env.IMAGE_TAG }}|g" Dockerrun.aws.json
+          sed -i -e "s|@IMAGE|${{ needs.ci.outputs.IMAGE_TAG }}|g" Dockerrun.aws.json
 
       - name: Read Dockerfile
         id: filesinfo
