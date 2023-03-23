@@ -47,3 +47,8 @@ jobs:
           echo REPOSITORY = ${{ env.REPOSITORY }}
           echo EB_APP_NAME = ${{ env.EB_APP_NAME }}
           echo EB_APP_ENV = ${{ env.EB_APP_ENV }}
+      
+      - name: Checkout files
+        uses: Bhacaz/checkout-files@v2
+        with:
+         files: README.md,cory-home
