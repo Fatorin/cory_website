@@ -75,3 +75,11 @@ jobs:
           
       - name: Echo AWS JSON
         run: echo "${{ steps.awsjson.outputs.content }}"
+
+      - uses: snow-actions/sparse-checkout@v1.2.0
+        with:
+          patterns: |
+            ./*.go
+      
+      - name: Show files struct
+        run: ls
