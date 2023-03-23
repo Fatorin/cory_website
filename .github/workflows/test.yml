@@ -68,8 +68,18 @@ jobs:
         shell: bash
         run: echo "label=$(echo ${TAG}-${TIMESTAMP})" >> "$GITHUB_OUTPUT"
         env:
-          TAG: ${{ needs.build.outputs.IMAGE_OUTPUT }}
+          TAG: "TEST"
           TIMESTAMP: ${{ steps.get_timestamp.outputs.timestamp }}
 
       - name: Show Label
-        run: ${{ steps.get_label.outputs.label }}
+        run: echo ${{ steps.get_label.outputs.label }}
+
+      - name: Checkout files
+        uses: Bhacaz/checkout-files@v2
+        with:
+          files: Dockerrun.aws.json
+
+      - name: Package Dockerrun.aws.json
+        run: |
+          sed -i -e "s|@IMAGE|${{ needs.build.outputs.IMAGE_OUTPUT }}|g" Dockerrun.aws.json
+          zip -r "deploy.zip" Dockerrun.aws.json
