@@ -25,41 +25,39 @@ jobs:
     name: Test Env
     runs-on: ubuntu-latest
     outputs:
-      DOCKERFILE_NAME: ${{ env.DOCKERFILE_NAME}}
-      REPOSITORY: ${{ env.REPOSITORY }}
-      EB_APP_NAME: ${{ env.EB_APP_NAME }}
-      EB_APP_ENV: ${{ env.EB_APP_ENV }}
+      DOCKERFILE_NAME: ${{ steps.ci.outputs.DOCKERFILE_NAME}}
+      REPOSITORY: ${{ steps.ci.outputs.REPOSITORY }}
+      EB_APP_NAME: ${{ steps.ci.outputs.EB_APP_NAME }}
+      EB_APP_ENV: ${{ steps.ci.outputs.EB_APP_ENV }}
     steps:
       - name: Set ENV for Testing
         if: github.event.inputs.environment == 'Test'
         run: |
-          echo "DOCKERFILE_NAME=Dockerfile.server" >> "$GITHUB_ENV"
-          echo "REPOSITORY=arcade-galaxy" >> "$GITHUB_ENV"
-          echo "EB_APP_NAME=ag-testing" >> "$GITHUB_ENV"
-          echo "EB_APP_ENV=ag-testing-env" >> "$GITHUB_ENV"
+          echo "DOCKERFILE_NAME=Dockerfile.server" >> "$GITHUB_OUTPUT"
+          echo "REPOSITORY=arcade-galaxy" >> "$GITHUB_OUTPUT"
+          echo "EB_APP_NAME=ag-testing" >> "$GITHUB_OUTPUT"
+          echo "EB_APP_ENV=ag-testing-env" >> "$GITHUB_OUTPUT"
 
       - name: Set ENV for Beta
         if: github.event.inputs.environment == 'Beta'
         run: |
-          echo "DOCKERFILE_NAME=Dockerfile.beta.server" >> "$GITHUB_ENV"
-          echo "REPOSITORY=arcade-galaxy-beta" >> "$GITHUB_ENV"
-          echo "EB_APP_NAME=ag-beta" >> "$GITHUB_ENV"
-          echo "EB_APP_ENV=ag-beta-env" >> "$GITHUB_ENV"
-
-      - name: Check ENV
-        env:
-          REPOSITORY: $${{ env.REPOSITORY }}
-        run: |
-          echo DOCKERFILE_NAME = ${{ env.DOCKERFILE_NAME }}
-          echo REPOSITORY = ${{ env.REPOSITORY }}
-          echo EB_APP_NAME = ${{ env.EB_APP_NAME }}
-          echo EB_APP_ENV = ${{ env.EB_APP_ENV }}
+          echo "DOCKERFILE_NAME=Dockerfile.beta.server" >> "$GITHUB_OUTPUT"
+          echo "REPOSITORY=arcade-galaxy-beta" >> "$GITHUB_OUTPUT"
+          echo "EB_APP_NAME=ag-beta" >> "$GITHUB_OUTPUT"
+          echo "EB_APP_ENV=ag-beta-env" >> "$GITHUB_OUTPUT"
 
   build:
     name: Build image
     runs-on: ubuntu-latest
     needs: [ci]
     steps:
+      - name: Check ENV
+        run: |
+          echo DOCKERFILE_NAME = ${{ needs.ci.outputs.DOCKERFILE_NAME }}
+          echo REPOSITORY = ${{ needs.ci.outputs.REPOSITORY }}
+          echo EB_APP_NAME = ${{ needs.ci.outputs.EB_APP_NAME }}
+          echo EB_APP_ENV = ${{ needs.ci.outputs.EB_APP_ENV }}
+
       - name: Checkout files
         uses: Bhacaz/checkout-files@v2
         with:
