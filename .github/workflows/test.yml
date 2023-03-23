@@ -52,6 +52,10 @@ jobs:
         uses: Bhacaz/checkout-files@v2
         with:
          files: Dockerrun.aws.json cory-home
+         
+      - name: Change aws file  
+        run: |
+          sed -i -e "s|@IMAGE|${{ env.IMAGE_TAG }}|g" Dockerrun.aws.json
 
       - name: Read Dockerfile
         id: filesinfo
