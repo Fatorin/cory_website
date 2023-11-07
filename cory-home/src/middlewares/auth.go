@@ -5,14 +5,14 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 var secretKey = os.Getenv("ENCRYPTION_SECRET")
 
 type ClaimsWithScope struct {
-	jwt.StandardClaims
+	jwt.RegisteredClaims
 	Scope string
 }
 
@@ -44,7 +44,7 @@ func IsAuthenticated(c *fiber.Ctx) error {
 func GenerateJWT(id uint, scope string) (string, error) {
 	payload := ClaimsWithScope{}
 	payload.Subject = strconv.Itoa(int(id))
-	payload.ExpiresAt = time.Now().Add(time.Hour * 24).Unix()
+	payload.ExpiresAt = jwt.NewNumericDate(time.Now().Add(time.Hour * 24))
 	payload.Scope = scope
 
 	return jwt.NewWithClaims(jwt.SigningMethodHS256, payload).SignedString([]byte(secretKey))
@@ -61,8 +61,8 @@ func GetUserId(c *fiber.Ctx) (uint, error) {
 	}
 
 	payload := token.Claims.(*ClaimsWithScope)
-
-	id, _ := strconv.Atoi(payload.Subject)
+	subject, _ := payload.GetSubject()
+	id, _ := strconv.Atoi(subject)
 
 	return uint(id), nil
 }
